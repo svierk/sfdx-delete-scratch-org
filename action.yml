@@ -1,0 +1,29 @@
+name: SFDX Delete Scratch Org
+description: Composite action for deleting a Salesforce scratch org.
+
+branding:
+  icon: trash-2
+  color: blue
+
+inputs:
+  target-org:
+    description: Username or alias of the scratch org to delete. Not required if the default org is already set.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Delete Scratch Org
+      shell: bash
+      env:
+        TARGET_ORG: ${{ inputs.target-org }}
+      run: |
+        set -euo pipefail
+
+        args=(--no-prompt)
+
+        if [[ -n "$TARGET_ORG" ]]; then
+          args+=(--target-org "$TARGET_ORG")
+        fi
+
+        sf org delete scratch "${args[@]}"
