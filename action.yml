@@ -20,10 +20,14 @@ runs:
       run: |
         set -euo pipefail
 
-        args=(--no-prompt)
+        args=(--no-prompt --json)
 
         if [[ -n "$TARGET_ORG" ]]; then
           args+=(--target-org "$TARGET_ORG")
         fi
 
-        sf org delete scratch "${args[@]}"
+        result=$(sf org delete scratch "${args[@]}")
+        username=$(echo "$result" | jq -r '.result.username // empty')
+
+        echo "✅ Successfully deleted scratch org: ${username:-default org}"
+        echo "### 🗑️ Scratch org deleted: \`${username:-default org}\`" >> "$GITHUB_STEP_SUMMARY"

@@ -50,6 +50,8 @@ jobs:
 
 The action always runs with `--no-prompt`, so it never blocks the pipeline waiting for confirmation.
 
+On success the action logs a confirmation with the deleted org and adds an entry to the [GitHub Step Summary](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary), so the cleanup result is visible directly in the run overview.
+
 ## References
 
 The deletion option supported by this GitHub composite action can be found in the Salesforce CLI Command Reference here:
