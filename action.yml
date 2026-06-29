@@ -30,4 +30,14 @@ runs:
         username=$(echo "$result" | jq -r '.result.username // empty')
 
         echo "✅ Successfully deleted scratch org: ${username:-default org}"
-        echo "### 🗑️ Scratch org deleted: \`${username:-default org}\`" >> "$GITHUB_STEP_SUMMARY"
+
+        # Append a self-contained section to the job summary. The leading and
+        # trailing blank lines keep this block cleanly separated from sections
+        # added by other steps/actions, regardless of their order or count.
+        {
+          echo ""
+          echo "### 🗑️ Scratch org deleted"
+          echo ""
+          echo "- **Username:** \`${username:-default org}\`"
+          echo ""
+        } >> "$GITHUB_STEP_SUMMARY"
